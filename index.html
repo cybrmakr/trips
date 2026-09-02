@@ -1,51 +1,476 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trips </title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-        .profile-picture {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            margin-top: 20px;
-            border: 3px solid #333;
-        }
-        header {
-            background-color: #f0f0f0;
-            padding: 20px;
-        }
-        .content {
-            padding: 20px;
-        }
-        iframe {
-            width: 100%;
-            height: 500px;
-            border: none;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#07080c" />
+  <meta name="description" content="Oliver Maicher — Reisen, Länder, Geschichten. Country by country." />
+  <meta property="og:title" content="Oliver Maicher — Trips" />
+  <meta property="og:description" content="43 countries and counting." />
+  <meta property="og:type" content="website" />
+  <title>Oliver Maicher — Trips</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#05060a;
+      --bg2:#090b11;
+      --panel:rgba(18,20,28,.66);
+      --panel2:rgba(255,255,255,.055);
+      --line:rgba(255,255,255,.095);
+      --text:#f3f4f6;
+      --muted:#9297a5;
+      --soft:#c8ccd5;
+      --accent:#c5ff3d;
+      --accent2:#70d8ff;
+      --danger:#ff7a9d;
+      --shadow:0 30px 90px rgba(0,0,0,.46);
+      --radius:28px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-height:100vh;
+      background:
+        radial-gradient(1200px 600px at 82% -10%, rgba(112,216,255,.12), transparent 58%),
+        radial-gradient(900px 600px at 8% 18%, rgba(197,255,61,.085), transparent 55%),
+        linear-gradient(180deg,#04050a 0%,#080a10 52%,#05060a 100%);
+      color:var(--text);
+      font-family:Manrope,system-ui,sans-serif;
+      overflow-x:hidden;
+    }
+    body:before{
+      content:"";position:fixed;inset:0;pointer-events:none;opacity:.22;z-index:0;
+      background-image:linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size:80px 80px;
+      mask-image:linear-gradient(to bottom,black,transparent 82%);
+    }
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    .wrap{width:min(1240px,calc(100% - 36px));margin:0 auto;position:relative;z-index:1}
+    .mono{font-family:"DM Mono",monospace;letter-spacing:.045em}
+    .topbar{
+      position:sticky;top:0;z-index:30;
+      border-bottom:1px solid rgba(255,255,255,.07);
+      background:rgba(5,6,10,.62);backdrop-filter:blur(22px);
+    }
+    .nav{height:74px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:-.03em}
+    .brandmark{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),#f0ffba);color:#091000;box-shadow:0 0 34px rgba(197,255,61,.22);font-weight:900}
+    .navlinks{display:flex;align-items:center;gap:7px}
+    .navlinks a{padding:10px 12px;color:#bfc3cc;font-size:14px;border-radius:10px}
+    .navlinks a:hover{background:rgba(255,255,255,.05);color:#fff}
+    .nav-cta{border:1px solid var(--line);padding:10px 14px!important;background:rgba(255,255,255,.03)}
+
+    .hero{padding:54px 0 24px}
+    .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:stretch}
+    .hero-copy{min-height:650px;display:flex;flex-direction:column;justify-content:center;padding:38px 0}
+    .eyebrow{display:inline-flex;width:max-content;align-items:center;gap:10px;color:var(--accent);font-size:11px;text-transform:uppercase}
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent)}
+    h1{font-size:clamp(54px,7vw,104px);line-height:.91;letter-spacing:-.075em;margin:20px 0 24px;max-width:860px}
+    h1 em{font-style:normal;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.5)}
+    .hero-copy p{max-width:590px;font-size:18px;line-height:1.75;color:var(--muted);margin:0 0 30px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{border:1px solid var(--line);border-radius:999px;padding:13px 18px;color:#fff;background:rgba(255,255,255,.045);cursor:pointer;transition:.2s ease;display:inline-flex;align-items:center;gap:9px}
+    .btn:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.07)}
+    .btn.primary{background:var(--accent);border-color:var(--accent);color:#0a1002;font-weight:800;box-shadow:0 12px 38px rgba(197,255,61,.18)}
+    .btn.primary:hover{background:#d0ff63}
+    .hero-meta{display:flex;gap:26px;margin-top:48px;padding-top:22px;border-top:1px solid var(--line);max-width:610px}
+    .stat strong{display:block;font-size:26px;letter-spacing:-.04em}.stat span{display:block;color:var(--muted);font-size:11px;margin-top:5px;text-transform:uppercase;letter-spacing:.08em}
+
+    .globe-card{position:relative;min-height:650px;border:1px solid var(--line);border-radius:36px;overflow:hidden;background:radial-gradient(circle at 50% 42%,rgba(70,104,124,.15),transparent 35%),linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.015));box-shadow:var(--shadow)}
+    #globe{position:absolute;inset:0;width:100%;height:100%;display:block}
+    .globe-vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 50%,transparent 40%,rgba(4,5,8,.58) 100%)}
+    .globe-label{position:absolute;left:24px;top:22px;display:flex;gap:9px;align-items:center;padding:9px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(0,0,0,.24);backdrop-filter:blur(12px);color:#dce0e7;font-size:11px}
+    .globe-help{position:absolute;right:24px;bottom:20px;color:#737a87;font-size:10px;text-transform:uppercase;letter-spacing:.11em}
+    .latest-pill{position:absolute;left:24px;bottom:22px;display:flex;align-items:center;gap:12px;padding:11px 14px;border:1px solid var(--line);border-radius:15px;background:rgba(5,6,10,.55);backdrop-filter:blur(16px)}
+    .flag{font-size:25px;line-height:1}.latest-pill b{font-size:12px}.latest-pill small{display:block;color:var(--muted);margin-top:2px}
+
+    section{padding:78px 0}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:25px}
+    .section-kicker{font-size:11px;color:var(--accent);text-transform:uppercase}
+    h2{font-size:clamp(34px,4.5vw,62px);line-height:.98;letter-spacing:-.06em;margin:8px 0 0}
+    .section-note{max-width:410px;color:var(--muted);font-size:14px;line-height:1.7}
+
+    .timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .card{border:1px solid var(--line);border-radius:24px;background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.018));overflow:hidden;transition:transform .25s ease,border-color .25s ease;box-shadow:0 20px 70px rgba(0,0,0,.18)}
+    .card:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.18)}
+    .card-top{height:160px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(circle at 50% 50%,rgba(112,216,255,.15),transparent 54%),linear-gradient(135deg,#111621,#07090d)}
+    .card-top:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(4,5,8,.5));}
+    .card-flag{font-size:70px;filter:drop-shadow(0 18px 26px rgba(0,0,0,.44));transition:transform .35s ease}.card:hover .card-flag{transform:scale(1.08) rotate(-3deg)}
+    .chip{position:absolute;top:13px;left:13px;z-index:2;font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:7px 9px;border-radius:999px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(9px)}
+    .card-body{padding:18px}.card-body h3{margin:0;font-size:22px;letter-spacing:-.04em}.card-body p{margin:8px 0 18px;color:var(--muted);font-size:13px;line-height:1.65;min-height:42px}.card-foot{display:flex;justify-content:space-between;align-items:center;color:#7f8591;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+
+    .explore{display:grid;grid-template-columns:310px 1fr;gap:17px;align-items:start}
+    .filter{position:sticky;top:95px;border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:24px;padding:18px}
+    .filter label{display:block;font-size:10px;color:#7f8591;text-transform:uppercase;letter-spacing:.09em;margin:0 0 8px}
+    .search{width:100%;padding:13px 14px;border-radius:13px;border:1px solid var(--line);background:rgba(0,0,0,.18);outline:none;color:#fff;font:inherit;font-size:13px}.search:focus{border-color:rgba(197,255,61,.42);box-shadow:0 0 0 3px rgba(197,255,61,.08)}
+    .filter-row{margin-top:14px}.filter-btn{width:100%;text-align:left;padding:11px 12px;border-radius:11px;border:1px solid transparent;background:transparent;color:#a8adb8;cursor:pointer;font-size:12px}.filter-btn:hover,.filter-btn.active{background:rgba(255,255,255,.05);color:#fff;border-color:var(--line)}
+    .country-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .country-card{padding:16px;min-height:165px;position:relative}.country-card .flag{font-size:34px;display:inline-block;margin-bottom:12px}.country-card h3{font-size:18px;margin:0 0 5px}.country-card .place{color:var(--muted);font-size:11px}.country-card .date{position:absolute;right:15px;top:16px;color:#666d78;font-size:9px;text-transform:uppercase;letter-spacing:.07em}.country-card .desc{color:#969ba6;font-size:11px;line-height:1.6;margin-top:13px}.empty{grid-column:1/-1;padding:40px;border:1px dashed var(--line);border-radius:20px;text-align:center;color:var(--muted)}
+
+    .add-note{margin-top:14px;padding:13px 15px;border:1px dashed rgba(197,255,61,.25);border-radius:14px;color:#98a080;font-size:11px;line-height:1.6;background:rgba(197,255,61,.025)}
+    .add-note code{font-family:"DM Mono",monospace;color:#d7e3ba}
+
+    .footer{padding:50px 0 70px;border-top:1px solid var(--line);margin-top:30px}.footer-row{display:flex;justify-content:space-between;align-items:start;gap:20px}.footer b{font-size:18px}.footer p{color:var(--muted);font-size:12px;line-height:1.65;max-width:460px}.links{display:flex;gap:8px;flex-wrap:wrap}.links a{border:1px solid var(--line);border-radius:999px;padding:10px 13px;color:#bfc4ce;font-size:11px}.links a:hover{color:#fff;background:rgba(255,255,255,.04)}
+
+    .reveal{opacity:0;transform:translateY(24px);animation:reveal .9s cubic-bezier(.16,1,.3,1) forwards}.d1{animation-delay:.08s}.d2{animation-delay:.18s}.d3{animation-delay:.28s}@keyframes reveal{to{opacity:1;transform:none}}
+    .scroll-line{position:fixed;left:10px;top:50%;width:1px;height:120px;background:linear-gradient(transparent,var(--accent),transparent);opacity:.34;z-index:3}
+
+    @media(max-width:900px){
+      .hero-grid{grid-template-columns:1fr}.hero-copy{min-height:auto;padding-top:45px}.globe-card{min-height:520px}.timeline{grid-template-columns:1fr 1fr}.explore{grid-template-columns:1fr}.filter{position:static}.country-grid{grid-template-columns:1fr 1fr}.navlinks a:not(.nav-cta){display:none}
+    }
+    @media(max-width:620px){
+      .wrap{width:min(100% - 22px,1240px)}.nav{height:65px}.brandmark{width:30px;height:30px}.nav-cta{padding:8px 11px!important}.hero{padding-top:18px}h1{font-size:58px}.hero-copy p{font-size:15px}.hero-meta{gap:18px}.stat strong{font-size:22px}.globe-card{min-height:455px;border-radius:26px}.timeline{grid-template-columns:1fr}.country-grid{grid-template-columns:1fr}.section-head{display:block}.section-note{margin-top:15px}.scroll-line{display:none}.footer-row{display:block}.links{margin-top:20px}
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <img class="profile-picture" src="https://links.olivermaicher.eu/transparent_2x.png" alt="Profile Picture">
-    </header>
-<h2>Oliver Maicher</h2>
-    <div class="content">
-        <p><strong>Next Trip:</strong> Brazil and Argentina</p>
-        <p><strong>Missing Continent:</strong> Antarctica</p>
-        <iframe src="https://countries-visited.com/?countries=Australia%2CNew%20Zealand%2CMexico%2CUnited%20States%20(USA)%2CCuba%2CColombia%2CEcuador%2CMorocco%2CJapan%2CSouth%20Korea%2CChina%2CPhilippines%2CThailand%2CVietnam%2CCambodia%2CLaos%2CSingapore%2CMalaysia%2CIndia%2CUnited%20Arab%20Emirates%2CBahrain%2CFrance%2CSpain%2CItaly%2CGermany%2CNetherlands%2CBelgium%2CSwitzerland%2CAustria%2CCzech%20Republic%2CPoland%2CCroatia%2CSlovenia%2CFinland%2CSweden%2CNorway%2CDenmark%2CTurkey%2CVatican%2CGibraltar%2CUnited%20States%2CUnited%20Kingdom%2CBrazil%2CMonaco%2CLiechtenstein#map"></iframe>
+  <div class="scroll-line"></div>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="#top" aria-label="Oliver Maicher Trips home"><span class="brandmark">O</span><span>OLIVER MAICHER</span></a>
+      <nav class="navlinks" aria-label="Main navigation">
+        <a href="#latest">Latest</a>
+        <a href="#countries">Countries</a>
+        <a href="https://olivermaicher.eu" target="_blank" rel="noopener" class="nav-cta">olivermaicher.eu ↗</a>
+      </nav>
     </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy reveal">
+          <div class="eyebrow mono"><span class="dot"></span> COUNTRIES / STORIES / MOVEMENT</div>
+          <h1>GO.<br><em>SEE.</em><br>REMEMBER.</h1>
+          <p>A visual log of places, people and moments around the world. No bucket list. Just the next destination.</p>
+          <div class="hero-actions">
+            <a href="#countries" class="btn primary">Explore countries <span>↓</span></a>
+            <a href="#latest" class="btn">Latest trip <span>↗</span></a>
+          </div>
+          <div class="hero-meta">
+            <div class="stat"><strong id="countryCount">43</strong><span>countries</span></div>
+            <div class="stat"><strong>∞</strong><span>stories ahead</span></div>
+            <div class="stat"><strong>01</strong><span>rule — keep going</span></div>
+          </div>
+        </div>
+
+        <div class="globe-card reveal d2" aria-label="Interactive 3D travel globe">
+          <canvas id="globe"></canvas>
+          <div class="globe-vignette"></div>
+          <div class="globe-label mono"><span class="dot"></span> LIVE TRAVEL MAP</div>
+          <div class="latest-pill">
+            <span class="flag">🇱🇮</span><div><b>Liechtenstein</b><small>Country #43 · latest</small></div>
+          </div>
+          <div class="globe-help mono">drag · rotate · scroll</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="latest">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><div class="section-kicker mono">01 / latest</div><h2>THE LATEST<br>CHAPTER.</h2></div>
+          <p class="section-note">Country number 43: Liechtenstein. Small on the map. Big enough to add another line to the story.</p>
+        </div>
+        <article class="card reveal d1" style="max-width:760px">
+          <div class="card-top" style="height:260px;background:radial-gradient(circle at 48% 42%,rgba(197,255,61,.16),transparent 34%),linear-gradient(135deg,#141b17,#080a0d)">
+            <span class="card-flag" style="font-size:105px">🇱🇮</span><span class="chip mono">COUNTRY #43</span>
+          </div>
+          <div class="card-body">
+            <h3>Liechtenstein</h3>
+            <p>Another country checked off. Another reminder that the interesting part is rarely the pin on the map — it is what happens around it.</p>
+            <div class="card-foot"><span>Central Europe</span><span>2026</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="countries">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><div class="section-kicker mono">02 / atlas</div><h2>COUNTRIES<br>I'VE SEEN.</h2></div>
+          <p class="section-note">Every card comes from the editable <code>COUNTRIES</code> array in this file. Add a country in one place and the globe, counter and grid update automatically.</p>
+        </div>
+
+        <div class="explore">
+          <aside class="filter reveal">
+            <label for="search">Search</label>
+            <input id="search" class="search" placeholder="Country, city, note…" autocomplete="off" />
+            <div class="filter-row">
+              <label>View</label>
+              <button class="filter-btn active" data-filter="all">All countries</button>
+              <button class="filter-btn" data-filter="latest">Latest first</button>
+              <button class="filter-btn" data-filter="alphabetical">A → Z</button>
+            </div>
+            <div class="add-note"><strong>GitHub tip</strong><br>Add another object inside <code>COUNTRIES</code> near the bottom of this file. No database. No CMS. Commit → GitHub Pages updates.</div>
+          </aside>
+          <div id="countryGrid" class="country-grid reveal d1"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-row">
+      <div><b>OLIVER MAICHER</b><p>Trips is a visual side of olivermaicher.eu — built as a static site, designed to travel fast, and intentionally easy to maintain.</p></div>
+      <div class="links"><a href="https://olivermaicher.eu" target="_blank" rel="noopener">Website ↗</a><a href="https://www.linkedin.com/in/oliver-maicher/" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================
+       COUNTRY DATABASE — EDIT THIS BLOCK IN GITHUB
+       Add a new country like:
+       { name:'Japan', flag:'🇯🇵', year:2026, city:'Tokyo', note:'First visit.', lat:35.6762, lon:139.6503 }
+       lat/lon are only used for the 3D globe point.
+       ========================================================== -->
+  <script>
+    const COUNTRIES = [
+      { name:'Liechtenstein', flag:'🇱🇮', year:2026, city:'Vaduz', note:'Country #43 — latest chapter.', lat:47.1410, lon:9.5209, latest:true },
+      { name:'Spain', flag:'🇪🇸', year:2026, city:'Spain', note:'Sun, movement and a change of scenery.', lat:40.4637, lon:-3.7492 },
+      { name:'Germany', flag:'🇩🇪', year:2026, city:'Germany', note:'Home base and starting point.', lat:51.1657, lon:10.4515 },
+      { name:'Brazil', flag:'🇧🇷', year:2025, city:'Brazil', note:'A long chapter in South America.', lat:-14.2350, lon:-51.9253 },
+      { name:'Mexico', flag:'🇲🇽', year:2024, city:'Mexico', note:'One of the places that felt like more than a trip.', lat:23.6345, lon:-102.5528 },
+      { name:'India', flag:'🇮🇳', year:2024, city:'India', note:'Fast, intense, unforgettable.', lat:20.5937, lon:78.9629 },
+      { name:'New Zealand', flag:'🇳🇿', year:2023, city:'New Zealand', note:'Far away — exactly the point.', lat:-40.9006, lon:174.8860 },
+      { name:'Italy', flag:'🇮🇹', year:2023, city:'Italy', note:'A classic route with plenty left to explore.', lat:41.8719, lon:12.5674 }
+    ];
+
+    // Keep this number in sync with your real total if you have additional
+    // countries that you don't want to list yet. The grid uses the array above.
+    const TOTAL_COUNTRIES = 43;
+
+    const grid = document.getElementById('countryGrid');
+    const search = document.getElementById('search');
+    const count = document.getElementById('countryCount');
+    const buttons = [...document.querySelectorAll('.filter-btn')];
+    let mode = 'all';
+
+    count.textContent = TOTAL_COUNTRIES;
+
+    function renderCountries(){
+      const q = search.value.trim().toLowerCase();
+      let items = COUNTRIES.filter(c => `${c.name} ${c.city} ${c.note}`.toLowerCase().includes(q));
+      if(mode === 'latest') items.sort((a,b)=>(Number(b.year)||0)-(Number(a.year)||0));
+      if(mode === 'alphabetical') items.sort((a,b)=>a.name.localeCompare(b.name));
+      if(!items.length){ grid.innerHTML = '<div class="empty">No country matches your search.</div>'; return; }
+      grid.innerHTML = items.map(c => `
+        <article class="card country-card">
+          <span class="flag">${c.flag}</span>
+          <span class="date mono">${c.year}</span>
+          <h3>${escapeHtml(c.name)}</h3>
+          <div class="place">${escapeHtml(c.city)}</div>
+          <p class="desc">${escapeHtml(c.note)}</p>
+        </article>`).join('');
+    }
+    function escapeHtml(v){return String(v).replace(/[&<>'"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[s]));}
+    search.addEventListener('input', renderCountries);
+    buttons.forEach(btn => btn.addEventListener('click',()=>{buttons.forEach(x=>x.classList.remove('active'));btn.classList.add('active');mode=btn.dataset.filter;renderCountries()}));
+    renderCountries();
+
+    // ==================== 3D GLOBE ====================
+    // Country borders are loaded from GeoJSON at runtime. This keeps the site
+    // fully static while still giving the globe a real geographic surface.
+    const THREE_VERSION = '0.180.0';
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.textContent = `
+      import * as THREE from 'https://cdn.jsdelivr.net/npm/three@${THREE_VERSION}/build/three.module.js';
+
+      const canvas = document.getElementById('globe');
+      const host = canvas.parentElement;
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
+      camera.position.set(0, 0, 4.2);
+
+      const renderer = new THREE.WebGLRenderer({
+        canvas, antialias:true, alpha:true, powerPreference:'high-performance'
+      });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.7));
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+      const globe = new THREE.Group();
+      scene.add(globe);
+      const R = 1.48;
+
+      // Deep ocean sphere + atmospheric glow.
+      const sphere = new THREE.Mesh(
+        new THREE.SphereGeometry(R, 64, 64),
+        new THREE.MeshBasicMaterial({ color:0x09151d, transparent:true, opacity:.96 })
+      );
+      globe.add(sphere);
+
+      const atmosphere = new THREE.Mesh(
+        new THREE.SphereGeometry(R * 1.055, 64, 64),
+        new THREE.MeshBasicMaterial({
+          color:0x70d8ff, transparent:true, opacity:.055,
+          side:THREE.BackSide, blending:THREE.AdditiveBlending
+        })
+      );
+      scene.add(atmosphere);
+
+      const borderGroup = new THREE.Group();
+      const visitedGroup = new THREE.Group();
+      const pointsGroup = new THREE.Group();
+      globe.add(borderGroup, visitedGroup, pointsGroup);
+
+      function latLon(lat, lon, radius=R){
+        const phi = (90 - lat) * Math.PI / 180;
+        const theta = (lon + 180) * Math.PI / 180;
+        return new THREE.Vector3(
+          -radius * Math.sin(phi) * Math.cos(theta),
+           radius * Math.cos(phi),
+           radius * Math.sin(phi) * Math.sin(theta)
+        );
+      }
+
+      // Slightly raised border lines make the world map read clearly on small screens.
+      const borderMaterial = new THREE.LineBasicMaterial({
+        color:0x97a9b2, transparent:true, opacity:.38
+      });
+      const coastMaterial = new THREE.LineBasicMaterial({
+        color:0xb8cbd2, transparent:true, opacity:.52
+      });
+      const visitedMaterial = new THREE.LineBasicMaterial({
+        color:0xc5ff3d, transparent:true, opacity:.98
+      });
+
+      function closeRing(points){
+        if(points.length < 2) return;
+        const vecs = points.map(([lon,lat]) => latLon(lat, lon, R * 1.006));
+        vecs.push(vecs[0].clone());
+        return new THREE.Line(new THREE.BufferGeometry().setFromPoints(vecs), borderMaterial);
+      }
+
+      function visitedRing(points){
+        if(points.length < 2) return;
+        const vecs = points.map(([lon,lat]) => latLon(lat, lon, R * 1.012));
+        vecs.push(vecs[0].clone());
+        return new THREE.Line(new THREE.BufferGeometry().setFromPoints(vecs), visitedMaterial);
+      }
+
+      function drawGeoJSON(feature){
+        const g = feature.geometry;
+        const polys = g.type === 'Polygon' ? [g.coordinates] : g.type === 'MultiPolygon' ? g.coordinates : [];
+        for(const poly of polys){
+          if(!poly[0] || poly[0].length < 2) continue;
+          const ring = closeRing(poly[0]);
+          if(ring) borderGroup.add(ring);
+          // Interior rings (holes) still read as borders.
+          for(let i=1;i<poly.length;i++){
+            const hole = closeRing(poly[i]);
+            if(hole) borderGroup.add(hole);
+          }
+        }
+      }
+
+      // Public GeoJSON: country names are included in feature.properties.name.
+      fetch('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson')
+        .then(r => r.json())
+        .then(world => {
+          world.features.forEach(drawGeoJSON);
+          // Highlight visited countries by matching their names.
+          const visitedNames = new Set(COUNTRIES.map(c => c.name.toLowerCase()));
+          world.features.forEach(feature => {
+            const name = String(feature.properties?.name || '').toLowerCase();
+            if(!visitedNames.has(name)) return;
+            const g = feature.geometry;
+            const polys = g.type === 'Polygon' ? [g.coordinates] : g.type === 'MultiPolygon' ? g.coordinates : [];
+            for(const poly of polys){
+              if(poly[0] && poly[0].length > 1){
+                const ring = visitedRing(poly[0]);
+                if(ring) visitedGroup.add(ring);
+              }
+            }
+          });
+        })
+        .catch(err => console.warn('World map could not be loaded:', err));
+
+      // Visit markers. Pulsing rings create a subtle premium tracking-map feel.
+      const pointMaterial = new THREE.MeshBasicMaterial({color:0xc5ff3d});
+      const softMaterial = new THREE.MeshBasicMaterial({color:0xc5ff3d, transparent:true, opacity:.13, side:THREE.DoubleSide});
+      const markerItems = [];
+      COUNTRIES.forEach(c => {
+        if(typeof c.lat !== 'number' || typeof c.lon !== 'number') return;
+        const p = new THREE.Mesh(new THREE.SphereGeometry(.035, 16, 16), pointMaterial);
+        p.position.copy(latLon(c.lat,c.lon,R*1.019));
+        pointsGroup.add(p);
+        const halo = new THREE.Mesh(new THREE.CircleGeometry(.09, 32), softMaterial);
+        halo.position.copy(latLon(c.lat,c.lon,R*1.022));
+        halo.lookAt(0,0,0);
+        pointsGroup.add(halo);
+        markerItems.push({halo, phase:Math.random()*Math.PI*2});
+      });
+
+      // Latitude guides.
+      const guideMaterial = new THREE.LineBasicMaterial({color:0x70d8ff,transparent:true,opacity:.07});
+      [-60,-30,0,30,60].forEach(lat=>{
+        const pts=[]; const radius=R*1.002; const r=radius*Math.cos(lat*Math.PI/180); const y=radius*Math.sin(lat*Math.PI/180);
+        for(let i=0;i<=96;i++){const a=i/96*Math.PI*2;pts.push(new THREE.Vector3(Math.cos(a)*r,y,Math.sin(a)*r));}
+        globe.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),guideMaterial));
+      });
+
+      // Ambient star field.
+      const starGeo = new THREE.BufferGeometry();
+      const arr=[];
+      for(let i=0;i<650;i++){
+        const r=THREE.MathUtils.randFloat(2.8,7);
+        const p=new THREE.Vector3().randomDirection().multiplyScalar(r);
+        arr.push(p.x,p.y,p.z);
+      }
+      starGeo.setAttribute('position',new THREE.Float32BufferAttribute(arr,3));
+      scene.add(new THREE.Points(starGeo,new THREE.PointsMaterial({color:0xffffff,size:.012,transparent:true,opacity:.34,sizeAttenuation:true})));
+
+      // Pointer interaction: drag to rotate, wheel/pinch-friendly zoom on desktop.
+      let dragging=false,lastX=0,lastY=0,targetY=-.5,targetX=-.08;
+      let velocityX=.0017;
+      canvas.style.touchAction='none';
+      canvas.addEventListener('pointerdown',e=>{
+        dragging=true; lastX=e.clientX; lastY=e.clientY; canvas.setPointerCapture(e.pointerId);
+      });
+      canvas.addEventListener('pointermove',e=>{
+        if(!dragging) return;
+        const dx=e.clientX-lastX, dy=e.clientY-lastY;
+        targetY += dx*.0052; targetX += dy*.0035;
+        targetX=THREE.MathUtils.clamp(targetX,-.75,.75);
+        lastX=e.clientX; lastY=e.clientY;
+      });
+      ['pointerup','pointercancel','pointerleave'].forEach(t=>canvas.addEventListener(t,()=>dragging=false));
+      canvas.addEventListener('wheel',e=>{
+        e.preventDefault();
+        camera.position.z=THREE.MathUtils.clamp(camera.position.z+e.deltaY*.0024,3.15,5.1);
+      },{passive:false});
+
+      function resize(){
+        const w=Math.max(1,host.clientWidth), h=Math.max(1,host.clientHeight);
+        renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix();
+      }
+      addEventListener('resize',resize,{passive:true});
+      resize();
+
+      const clock = new THREE.Clock();
+      function frame(){
+        requestAnimationFrame(frame);
+        const t=clock.getElapsedTime();
+        if(!dragging) targetY += velocityX;
+        globe.rotation.y += (targetY-globe.rotation.y)*.055;
+        globe.rotation.x += (targetX-globe.rotation.x)*.045;
+        markerItems.forEach(m=>{
+          const s=.85 + (Math.sin(t*2.2+m.phase)+1)*.13;
+          m.halo.scale.setScalar(s);
+          m.halo.material.opacity=.08 + (Math.sin(t*2.2+m.phase)+1)*.025;
+        });
+        renderer.render(scene,camera);
+      }
+      frame();
+    `;
+    document.body.appendChild(script);
+
+  </script>
 </body>
-          <footer>  
-    <p><a href="https://burp.olivermaicher.eu/impressum.html">Impressum</a></p>
-<p><a href="https://burp.olivermaicher.eu/datenschutz.html">Datenschutz</a></p>          
-  
-      </footer>  
 </html>
